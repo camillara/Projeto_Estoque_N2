@@ -21,6 +21,7 @@ public class FornecedorView {
 		System.out.println("\n* * * * * * *");
 		System.out.print("==>");
 		int opcao = leia.nextInt();
+		leia.nextLine();
 		switch (opcao) {
 
 		case 1:
@@ -53,9 +54,9 @@ public class FornecedorView {
 
 	public void menuCadastrar() {
 		System.out.println("* * * CADASTRO DE FORNECEDOR * * *\n");
-		System.out.print("Informe o código do fornecedor: ");
-		fornecedor.setId(leia.nextInt());
-		leia.nextLine();
+		//System.out.print("Informe o código do fornecedor: ");
+		//fornecedor.setId(leia.nextInt());
+		//leia.nextLine();
 		System.out.print("Informe o CPF / CNPJ: ");
 		fornecedor.setCnpj(leia.nextLine());
 		System.out.print("Informe a Razão Social: ");

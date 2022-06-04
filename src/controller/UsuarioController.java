@@ -12,7 +12,6 @@ public class UsuarioController {
 		if (userService.ler(user)) {
 			return "Usuário já possui cadastro!";
 		} else {
-			userService.escrever(user);
 			if (userService.escrever(user)) {
 				return "Usuário cadastrado com sucesso!";
 			} else {
@@ -28,14 +27,13 @@ public class UsuarioController {
 	}
 
 	public Boolean atualizar(Usuario user) {
-		
-		
+
 		return userService.atualizar(user);
 
 	}
 
 	public Boolean deletar(Usuario user) {
-		
+
 		return userService.deletar(user);
 	}
 

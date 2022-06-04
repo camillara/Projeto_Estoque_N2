@@ -5,17 +5,14 @@ import java.util.ArrayList;
 import model.Cliente;
 import service.ClienteService;
 
-
-
 public class ClienteController {
-	
+
 	ClienteService clienteService = new ClienteService();
-	
+
 	public String cadastrar(Cliente cliente) {
 		if (clienteService.ler(cliente)) {
 			return "Cliente já possui cadastro!";
 		} else {
-			clienteService.escrever(cliente);
 			if (clienteService.escrever(cliente)) {
 				return "Cliente cadastrado com sucesso!";
 			} else {
@@ -31,14 +28,13 @@ public class ClienteController {
 	}
 
 	public Boolean atualizar(Cliente cliente) {
-		
-		
+
 		return clienteService.atualizar(cliente);
 
 	}
 
 	public Boolean deletar(Cliente cliente) {
-		
+
 		return clienteService.deletar(cliente);
 	}
 

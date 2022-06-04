@@ -21,6 +21,7 @@ public class ClienteView {
 		System.out.println("\n* * * * * * *");
 		System.out.print("==>");
 		int opcao = leia.nextInt();
+		leia.nextLine();
 		switch (opcao) {
 
 		case 1:
@@ -53,9 +54,9 @@ public class ClienteView {
 
 	public void menuCadastrar() {
 		System.out.println("* * * CADASTRO DE CLIENTE * * *\n");
-		System.out.print("Informe o código do cliente: ");
-		cliente.setId(leia.nextInt());
-		leia.nextLine();
+		//System.out.print("Informe o código do cliente: ");
+		//cliente.setId(leia.nextInt());
+		//leia.nextLine();
 		System.out.print("Informe o nome: ");
 		cliente.setNome(leia.nextLine().toUpperCase());
 		char genero = 'a';

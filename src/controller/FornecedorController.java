@@ -13,7 +13,6 @@ FornecedorService fornecedorService = new FornecedorService();
 		if (fornecedorService.ler(fornecedor)) {
 			return "Usuário já possui cadastro!";
 		} else {
-			fornecedorService.escrever(fornecedor);
 			if (fornecedorService.escrever(fornecedor)) {
 				return "Usuário cadastrado com sucesso!";
 			} else {

@@ -20,6 +20,7 @@ public class UsuarioView {
 		System.out.println("\n* * * * * * *");
 		System.out.print("==>");
 		int opcao = leia.nextInt();
+		leia.nextLine();
 		switch (opcao) {
 
 		case 1:
@@ -52,10 +53,10 @@ public class UsuarioView {
 
 	public void menuCadastrar() {
 		System.out.println("* * * CADASTRO DE USUÁRIO * * *\n");
-		leia.nextLine();
-		System.out.print("Informe o código usuário: ");
-		user.setIdUsuario(leia.nextInt());
-		leia.nextLine();
+		//leia.nextLine();
+		//System.out.print("Informe o código usuário: ");
+		//user.setIdUsuario(leia.nextInt());
+		//leia.nextLine();
 		System.out.print("Informe o usuário: ");
 		user.setUsername(leia.nextLine().toUpperCase());
 		System.out.print("Informe a senha: ");
