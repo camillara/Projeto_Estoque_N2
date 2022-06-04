@@ -11,10 +11,10 @@ FornecedorService fornecedorService = new FornecedorService();
 	
 	public String cadastrar(Fornecedor fornecedor) {
 		if (fornecedorService.ler(fornecedor)) {
-			return "Usuário já possui cadastro!";
+			return "Fornecedor já possui cadastro!";
 		} else {
 			if (fornecedorService.escrever(fornecedor)) {
-				return "Usuário cadastrado com sucesso!";
+				return "Fornecedor cadastrado com sucesso!";
 			} else {
 				return "Tente novamente!";
 			}

@@ -53,20 +53,12 @@ public class UsuarioView {
 
 	public void menuCadastrar() {
 		System.out.println("* * * CADASTRO DE USUÁRIO * * *\n");
-		//leia.nextLine();
-		//System.out.print("Informe o código usuário: ");
-		//user.setIdUsuario(leia.nextInt());
-		//leia.nextLine();
 		System.out.print("Informe o usuário: ");
 		user.setUsername(leia.nextLine().toUpperCase());
 		System.out.print("Informe a senha: ");
-		user.setPassword(leia.nextLine());
-		System.out.println("Cadastro realizado com sucesso!");
-		System.out.println("\n* * * * * * *");
-
-
-		userController.cadastrar(user);
-
+		user.setPassword(leia.nextLine());		
+		System.out.println(userController.cadastrar(user));
+		System.out.println("\n* * * * * * *\n");
 		menuUsuario();
 	}
 

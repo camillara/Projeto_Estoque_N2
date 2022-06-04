@@ -53,9 +53,30 @@ public class ClienteService {
 	}
 
 	public Boolean ler(Cliente cliente) {
+		try {
+			if(existeArquivo()) {
+				FileReader arquivoLeitura = new FileReader(DIR_CLIENTE_DB);
+				BufferedReader memoriaLeitura = new BufferedReader(arquivoLeitura);
+				String linha = null;
+				while ((linha = memoriaLeitura.readLine()) != null) {
+					String[] linhaSplit = linha.split(";");
+					if(cliente.getCpf().equals(linhaSplit[2])) {
+						return true;
+					}
+				}
+				
+			}
 
+		} catch (FileNotFoundException e) {
+			System.out.println("Não foi possível abrir o arquivo.");
+			System.out.println("O erro gerado é: " + e.getMessage());
+		}
+
+		catch (IOException e) {
+			System.out.println("Não foi possível ler o arquivo.");
+			System.out.println("O erro gerado é: " + e.getMessage());
+		}
 		return false;
-
 	}
 
 	public ArrayList<Cliente> ler() {

@@ -54,9 +54,30 @@ public Boolean escrever(Fornecedor fornecedor) {
 	}
 	
 	public Boolean ler(Fornecedor fornecedor) {
-		
-		return false;
-		
+		try {
+			if(existeArquivo()) {
+				FileReader arquivoLeitura = new FileReader(DIR_FORNECEDOR_DB);
+				BufferedReader memoriaLeitura = new BufferedReader(arquivoLeitura);
+				String linha = null;
+				while ((linha = memoriaLeitura.readLine()) != null) {
+					String[] linhaSplit = linha.split(";");
+					if(fornecedor.getCnpj().equals(linhaSplit[1])) {
+						return true;
+					}
+				}
+				
+			}
+
+		} catch (FileNotFoundException e) {
+			System.out.println("Não foi possível abrir o arquivo.");
+			System.out.println("O erro gerado é: " + e.getMessage());
+		}
+
+		catch (IOException e) {
+			System.out.println("Não foi possível ler o arquivo.");
+			System.out.println("O erro gerado é: " + e.getMessage());
+		}
+		return false;	
 	}
 	
 	public ArrayList<Fornecedor> ler() {

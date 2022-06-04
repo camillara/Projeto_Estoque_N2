@@ -54,9 +54,6 @@ public class ClienteView {
 
 	public void menuCadastrar() {
 		System.out.println("* * * CADASTRO DE CLIENTE * * *\n");
-		//System.out.print("Informe o código do cliente: ");
-		//cliente.setId(leia.nextInt());
-		//leia.nextLine();
 		System.out.print("Informe o nome: ");
 		cliente.setNome(leia.nextLine().toUpperCase());
 		char genero = 'a';
@@ -76,9 +73,8 @@ public class ClienteView {
 		cliente.setEndereco(leia.nextLine().toUpperCase());
 		System.out.print("Informe o telefone: ");
 		cliente.setTelefone(leia.nextLine());
-		System.out.println("Cadastro realizado com sucesso!");
-		System.out.println("\n* * * * * * *");
-		clienteController.cadastrar(cliente);
+		System.out.println(clienteController.cadastrar(cliente));
+		System.out.println("\n* * * * * * *\n");
 		
 		menuCliente();
 	}

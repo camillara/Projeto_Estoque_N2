@@ -29,7 +29,7 @@ public class UsuarioService {
 					contadorLinha++;
 				}
 				user.setIdUsuario(contadorLinha);
-				String dados = user.getIdUsuario() + ";" + user.getUsername() + ";" + user.getPassword()+"\n";
+				String dados = user.getIdUsuario() + ";" + user.getUsername() + ";" + user.getPassword() + "\n";
 				FileWriter escreverArquivo = new FileWriter(arquivo, true);
 				escreverArquivo.write(dados);
 				escreverArquivo.close();
@@ -52,9 +52,30 @@ public class UsuarioService {
 	}
 
 	public Boolean ler(Usuario user) {
+		try {
+			if(existeArquivo()) {
+				FileReader arquivoLeitura = new FileReader(DIR_USER_DB);
+				BufferedReader memoriaLeitura = new BufferedReader(arquivoLeitura);
+				String linha = null;
+				while ((linha = memoriaLeitura.readLine()) != null) {
+					String[] linhaSplit = linha.split(";");
+					if(user.getUsername().equals(linhaSplit[1])) {
+						return true;
+					}
+				}
+				
+			}
 
+		} catch (FileNotFoundException e) {
+			System.out.println("Não foi possível abrir o arquivo.");
+			System.out.println("O erro gerado é: " + e.getMessage());
+		}
+
+		catch (IOException e) {
+			System.out.println("Não foi possível ler o arquivo.");
+			System.out.println("O erro gerado é: " + e.getMessage());
+		}
 		return false;
-
 	}
 
 	public ArrayList<Usuario> ler() {

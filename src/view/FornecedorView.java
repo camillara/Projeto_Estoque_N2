@@ -54,9 +54,6 @@ public class FornecedorView {
 
 	public void menuCadastrar() {
 		System.out.println("* * * CADASTRO DE FORNECEDOR * * *\n");
-		//System.out.print("Informe o código do fornecedor: ");
-		//fornecedor.setId(leia.nextInt());
-		//leia.nextLine();
 		System.out.print("Informe o CPF / CNPJ: ");
 		fornecedor.setCnpj(leia.nextLine());
 		System.out.print("Informe a Razão Social: ");
@@ -70,9 +67,8 @@ public class FornecedorView {
 		}
 		fornecedor.setTipoPessoa(tipoPessoa);
 		leia.nextLine();
-		System.out.println("Cadastro realizado com sucesso!");
-		System.out.println("\n* * * * * * *");
-		fornecedorController.cadastrar(fornecedor);
+		System.out.println(fornecedorController.cadastrar(fornecedor));
+		System.out.println("\n* * * * * * *\n");
 		menuFornecedor();
 	}
 
