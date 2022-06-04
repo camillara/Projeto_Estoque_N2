@@ -16,10 +16,15 @@ public class Usuario {
 		this.password=password;
 	}
 	
-	public Integer getId() {
+		
+	public Integer getIdUsuario() {
 		return idUsuario;
 	}
-	
+
+	public void setIdUsuario(Integer idUsuario) {
+		this.idUsuario = idUsuario;
+	}
+
 	public String getUsername() {
 		return username;
 	}

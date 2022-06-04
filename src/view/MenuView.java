@@ -24,13 +24,13 @@ public class MenuView {
 		
 		case 1:
 			UsuarioView userView = new UsuarioView();
-			userView.menuUsuario(null);
+			userView.menuUsuario();
 			
 			break;
 		
 		case 2: 
 			FornecedorView fornecedorView = new FornecedorView();
-			fornecedorView.menuFornecedor(null);
+			fornecedorView.menuFornecedor();
 			break;
 		
 		case 3: 
@@ -41,7 +41,7 @@ public class MenuView {
 		
 		case 5: 
 			ClienteView clienteView = new ClienteView();
-			clienteView.menuCliente(null);
+			clienteView.menuCliente();
 			break;
 			
 		case 6: 
