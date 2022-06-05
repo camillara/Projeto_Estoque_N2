@@ -6,6 +6,7 @@ import model.Usuario;
 import service.UsuarioService;
 
 public class UsuarioController {
+	
 	UsuarioService userService = new UsuarioService();
 
 	public String cadastrar(Usuario user) {
@@ -18,7 +19,6 @@ public class UsuarioController {
 				return "Tente novamente!";
 			}
 		}
-
 	}
 
 	public ArrayList<Usuario> listar() {
@@ -33,6 +33,10 @@ public class UsuarioController {
 
 	public Boolean deletar(Usuario user) {
 		return userService.deletar(user);
+	}
+	
+	public Boolean validarLoginUsuario(Usuario user){
+		return userService.validarLoginUsuario(user);
 	}
 
 }

@@ -1,15 +1,11 @@
 package view;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
-import controller.UsuarioController;
 import model.Usuario;
 
-public class UsuarioView {
-	Scanner leia = new Scanner(System.in);
-	Usuario user = new Usuario();
-	UsuarioController userController = new UsuarioController();
+public class UsuarioView extends ApplicationView implements IApplicationView{
+
 
 	public void menuUsuario() {
 		System.out.println("* * * MENU USUÁRIO * * *\n");

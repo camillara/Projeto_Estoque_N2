@@ -16,8 +16,13 @@ import model.Fornecedor;
 public class FornecedorService {
 
 	private final String DIR_FORNECEDOR_DB = "src/data_base/fornecedor.txt";
-
-	File arquivo = new File(DIR_FORNECEDOR_DB);
+	private File arquivo;
+	private BufferedWriter bw;
+	
+	public FornecedorService() {
+		arquivo = new File(DIR_FORNECEDOR_DB);
+	}
+	
 
 	public Boolean escrever(Fornecedor fornecedor) {
 
@@ -99,7 +104,7 @@ public class FornecedorService {
 					}
 					linha = memoriaLeitura.readLine();
 				}
-				BufferedWriter bw = new BufferedWriter(new FileWriter(DIR_FORNECEDOR_DB));
+				bw = new BufferedWriter(new FileWriter(DIR_FORNECEDOR_DB));
 				for (int i = 0; i < lista.size(); i++) {
 					bw.write(lista.get(i));
 					bw.newLine();
@@ -140,7 +145,7 @@ public class FornecedorService {
 					}
 					linha = memoriaLeitura.readLine();
 				}
-				BufferedWriter bw = new BufferedWriter(new FileWriter(DIR_FORNECEDOR_DB));
+				bw = new BufferedWriter(new FileWriter(DIR_FORNECEDOR_DB));
 				for (int i = 0; i < lista.size(); i++) {
 					bw.write(lista.get(i));
 					bw.newLine();

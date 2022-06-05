@@ -24,18 +24,13 @@ FornecedorService fornecedorService = new FornecedorService();
 
 	public ArrayList<Fornecedor> listar() {
 		return fornecedorService.ler();
-
 	}
 
-	public Boolean atualizar(Fornecedor fornecedor) {
-		
-		
+	public Boolean atualizar(Fornecedor fornecedor) {		
 		return fornecedorService.atualizar(fornecedor);
-
 	}
 
-	public Boolean deletar(Fornecedor fornecedor) {
-		
+	public Boolean deletar(Fornecedor fornecedor) {		
 		return fornecedorService.deletar(fornecedor);
 	}
 

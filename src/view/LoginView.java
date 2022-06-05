@@ -1,17 +1,21 @@
 package view;
 
-import java.util.Scanner;
-
-public class LoginView {
+public class LoginView extends ApplicationView{
 	
 	public void login() {
-		Scanner leia = new Scanner(System.in);
 		System.out.println("* * * LOGIN * * *");
 		System.out.print("Informe o usuário: ");
-		String username = leia.nextLine();
+		user.setUsername(leia.nextLine().toUpperCase());
 		System.out.print("Informe a senha: ");
-		String password = leia.nextLine();
+		user.setPassword(leia.nextLine());		
+		if(userController.validarLoginUsuario(user)) {
 		System.out.println("Logado com sucesso");
+		}
+		else {
+			System.out.println("Usuário ou Senha incorretos.");
+			System.out.println("Tente novamente.\n");
+			login();//recursão
+		}
 		System.out.println("* * * * * * * * * *\n");
 		
 		MenuView menu = new MenuView();

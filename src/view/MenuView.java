@@ -34,9 +34,19 @@ public class MenuView {
 			break;
 		
 		case 3: 
+			System.out.println("* * * MENU TIPO PESSOA * * *\n");
+			System.out.println("Selecionou opção 3 - Tipo Pessoa.");
+			System.out.println("Não foi implementado.");
+			System.out.println("\n* * * * * * *\n");
+			menu();//recursão
 			break;
 			
 		case 4: 
+			System.out.println("* * * MENU TIPO PRODUTO * * *\n");
+			System.out.println("Selecionou opção 4 - Tipo Produto.");
+			System.out.println("Não foi implementado.");
+			System.out.println("\n* * * * * * *\n");
+			menu();//recursão
 			break;
 		
 		case 5: 
@@ -45,11 +55,16 @@ public class MenuView {
 			break;
 			
 		case 6: 
+			System.out.println("* * * MENU PRODUTO * * *\n");
+			System.out.println("Selecionou opção 6 - Produto.");
+			System.out.println("Não foi implementado.");
+			System.out.println("\n* * * * * * *\n");
+			menu();//recursão
 			break;
 			
 		default: 
 			System.out.println("Opção inválida. Escolha novamente.");
-			menu();
+			menu();//recursão
 			break;
 		
 		}

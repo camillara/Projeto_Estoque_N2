@@ -16,8 +16,12 @@ import model.Cliente;
 public class ClienteService {
 
 	private final String DIR_CLIENTE_DB = "src/data_base/cliente.txt";
+	private File arquivo;
+	private BufferedWriter bw;
 
-	File arquivo = new File(DIR_CLIENTE_DB);
+	public ClienteService() {
+		arquivo = new File(DIR_CLIENTE_DB);
+	}
 
 	public Boolean escrever(Cliente cliente) {
 
@@ -49,7 +53,7 @@ public class ClienteService {
 	}
 
 	public Boolean ler(Cliente cliente) {
-		try (BufferedReader memoriaLeitura = new BufferedReader(new FileReader(DIR_CLIENTE_DB))){
+		try (BufferedReader memoriaLeitura = new BufferedReader(new FileReader(DIR_CLIENTE_DB))) {
 			if (existeArquivo()) {
 				String linha = null;
 				while ((linha = memoriaLeitura.readLine()) != null) {
@@ -97,7 +101,7 @@ public class ClienteService {
 	}
 
 	public Boolean deletar(Cliente cliente) {
-		try (BufferedReader memoriaLeitura = new BufferedReader(new FileReader(DIR_CLIENTE_DB))){
+		try (BufferedReader memoriaLeitura = new BufferedReader(new FileReader(DIR_CLIENTE_DB))) {
 			if (ler(cliente)) {
 				String linha = memoriaLeitura.readLine();
 				ArrayList<String> lista = new ArrayList<>();
@@ -107,7 +111,7 @@ public class ClienteService {
 					}
 					linha = memoriaLeitura.readLine();
 				}
-				BufferedWriter bw = new BufferedWriter(new FileWriter(DIR_CLIENTE_DB));
+				bw = new BufferedWriter(new FileWriter(DIR_CLIENTE_DB));
 				for (int i = 0; i < lista.size(); i++) {
 					bw.write(lista.get(i));
 					bw.newLine();
@@ -130,41 +134,40 @@ public class ClienteService {
 
 	public Boolean atualizar(Cliente cliente) {
 		Boolean retorno = false;
-		Scanner leia = new Scanner (System.in);
-		try (BufferedReader memoriaLeitura = new BufferedReader(new FileReader(DIR_CLIENTE_DB))){
-			if(ler(cliente)) {
+		Scanner leia = new Scanner(System.in);
+		try (BufferedReader memoriaLeitura = new BufferedReader(new FileReader(DIR_CLIENTE_DB))) {
+			if (ler(cliente)) {
 				String linha = memoriaLeitura.readLine();
 				ArrayList<String> lista = new ArrayList<>();
 				while (linha != null) {
-					if (linha.contains(cliente.getNome() + ";" + cliente.getCpf())== false) {
+					if (linha.contains(cliente.getNome() + ";" + cliente.getCpf()) == false) {
 						lista.add(linha);
 					} else {
-						String[] vetorCliente = linha.split(";");									
+						String[] vetorCliente = linha.split(";");
 						System.out.print("Informe o nome correto: ");
 						String novoNomeCliente = leia.nextLine().toUpperCase(); // alterar o nome do cliente
 						System.out.print("Informe o novo endereço: ");
 						String novoEnderecoCliente = leia.nextLine().toUpperCase(); // alterar o endereço do cliente
 						System.out.print("Informe o novo telefone: ");
 						String novoTelefoneCliente = leia.nextLine(); // alterar o telefone do cliente
-						linha = vetorCliente[0]+";"+novoNomeCliente+";"+vetorCliente[2]+";"+vetorCliente[3]+";"+novoEnderecoCliente+";"+novoTelefoneCliente;
+						linha = vetorCliente[0] + ";" + novoNomeCliente + ";" + vetorCliente[2] + ";" + vetorCliente[3]
+								+ ";" + novoEnderecoCliente + ";" + novoTelefoneCliente;
 						lista.add(linha);
-						retorno = true;						
+						retorno = true;
 					}
 					linha = memoriaLeitura.readLine();
 				}
-				BufferedWriter bw = new BufferedWriter(new FileWriter(DIR_CLIENTE_DB));
+				bw = new BufferedWriter(new FileWriter(DIR_CLIENTE_DB));
 				for (int i = 0; i < lista.size(); i++) {
 					bw.write(lista.get(i));
 					bw.newLine();
 				}
 				bw.close();
 			}
-		} 
-		catch (FileNotFoundException e) {
+		} catch (FileNotFoundException e) {
 			System.out.println("Não foi possível abrir o arquivo.");
 			System.out.println("O erro gerado é: " + e.getMessage());
-		}	
-		catch (IOException e) {
+		} catch (IOException e) {
 			System.out.println("Não foi possível ler o arquivo.");
 			System.out.println("O erro gerado é: " + e.getMessage());
 		}
@@ -193,10 +196,10 @@ public class ClienteService {
 
 	private Integer codigoCliente() {
 		Integer qtd = 0;
-		if(!existeArquivo()){
+		if (!existeArquivo()) {
 			return qtd;
-		}		
-		try (BufferedReader memoriaLeitura = new BufferedReader(new FileReader(DIR_CLIENTE_DB))){
+		}
+		try (BufferedReader memoriaLeitura = new BufferedReader(new FileReader(DIR_CLIENTE_DB))) {
 			String linha = memoriaLeitura.readLine();
 			ArrayList<String> lista = new ArrayList<>();
 			while (linha != null) {

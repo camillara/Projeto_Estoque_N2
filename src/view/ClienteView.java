@@ -1,17 +1,10 @@
 package view;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
-import controller.ClienteController;
 import model.Cliente;
-import model.Usuario;
 
-public class ClienteView {
-
-	Scanner leia = new Scanner(System.in);
-	Cliente cliente = new Cliente();
-	ClienteController clienteController = new ClienteController();
+public class ClienteView extends ApplicationView implements IApplicationView{
 
 	public void menuCliente() {
 		System.out.println("* * * MENU CLIENTE * * *\n");

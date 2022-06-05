@@ -1,18 +1,12 @@
 package view;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
-import controller.FornecedorController;
 import model.Fornecedor;
-import model.Usuario;
 
-public class FornecedorView {
-	Scanner leia = new Scanner(System.in);
-	Fornecedor fornecedor = new Fornecedor();
-	FornecedorController fornecedorController = new FornecedorController();
+public class FornecedorView extends ApplicationView implements IApplicationView{
 	
-	
+
 	public void menuFornecedor() {
 		System.out.println("* * * MENU FORNECEDOR * * *\n");
 		System.out.println("1 - Cadastrar");

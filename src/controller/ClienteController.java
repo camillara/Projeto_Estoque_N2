@@ -24,13 +24,10 @@ public class ClienteController {
 
 	public ArrayList<Cliente> listar() {
 		return clienteService.ler();
-
 	}
 
 	public Boolean atualizar(Cliente cliente) {
-
 		return clienteService.atualizar(cliente);
-
 	}
 
 	public Boolean deletar(Cliente cliente) {
