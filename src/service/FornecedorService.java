@@ -9,6 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import model.Fornecedor;
 
@@ -18,15 +19,11 @@ public class FornecedorService {
 
 	File arquivo = new File(DIR_FORNECEDOR_DB);
 
-
 	public Boolean escrever(Fornecedor fornecedor) {
 
-		try {
+		try (BufferedReader memoriaLeitura = new BufferedReader(new FileReader(DIR_FORNECEDOR_DB))) {
 			if (existeArquivo()) {
-
-				FileReader arquivoLeitura = new FileReader(DIR_FORNECEDOR_DB);
-				BufferedReader memoriaLeitura = new BufferedReader(arquivoLeitura);
-				fornecedor.setId(codigoFornecedor()+1);
+				fornecedor.setId(codigoFornecedor() + 1);
 				String dados = fornecedor.getId() + ";" + fornecedor.getTipoPessoa() + ";" + fornecedor.getCnpj() + ";"
 						+ fornecedor.getRazaoSocial() + ";" + fornecedor.getFantasia() + "\n";
 				FileWriter escreverArquivo = new FileWriter(arquivo, true);
@@ -37,25 +34,20 @@ public class FornecedorService {
 				criaArquivo();
 				escrever(fornecedor); // recursão
 			}
-
 		} catch (FileNotFoundException e) {
 			System.out.println("Não foi possível abrir o arquivo.");
 			System.out.println("O erro gerado é: " + e.getMessage());
 		}
-
 		catch (IOException e) {
 			System.out.println("Não foi possível ler o arquivo.");
 			System.out.println("O erro gerado é: " + e.getMessage());
 		}
 		return false;
-
 	}
 
 	public Boolean ler(Fornecedor fornecedor) {
-		try {
+		try (BufferedReader memoriaLeitura = new BufferedReader(new FileReader(DIR_FORNECEDOR_DB))) {
 			if (existeArquivo()) {
-				FileReader arquivoLeitura = new FileReader(DIR_FORNECEDOR_DB);
-				BufferedReader memoriaLeitura = new BufferedReader(arquivoLeitura);
 				String linha = null;
 				while ((linha = memoriaLeitura.readLine()) != null) {
 					String[] linhaSplit = linha.split(";");
@@ -63,14 +55,11 @@ public class FornecedorService {
 						return true;
 					}
 				}
-
 			}
-
 		} catch (FileNotFoundException e) {
 			System.out.println("Não foi possível abrir o arquivo.");
 			System.out.println("O erro gerado é: " + e.getMessage());
 		}
-
 		catch (IOException e) {
 			System.out.println("Não foi possível ler o arquivo.");
 			System.out.println("O erro gerado é: " + e.getMessage());
@@ -80,60 +69,48 @@ public class FornecedorService {
 
 	public ArrayList<Fornecedor> ler() {
 		List<Fornecedor> listaFornecedor = new ArrayList<>();
-		try (BufferedReader br = new BufferedReader(new FileReader(DIR_FORNECEDOR_DB))) {
-			String linha = br.readLine();
+		try (BufferedReader memoriaLeitura = new BufferedReader(new FileReader(DIR_FORNECEDOR_DB))) {
+			String linha = memoriaLeitura.readLine();
 			while (linha != null) {
+				Fornecedor fornecedores = new Fornecedor();
 				String[] vetorFornecedor = linha.split(";");
-				Integer idFornecedor = Integer.parseInt(vetorFornecedor[0]);
-				Integer tipoPessoaFornecedor = Integer.parseInt(vetorFornecedor[1]);
-				String cnpjFornecedor = vetorFornecedor[2];
-				String razaoSocialFornecedor = vetorFornecedor[3];
-				String fantasiaFornecedor = vetorFornecedor[4];
-				Fornecedor fornecedores = new Fornecedor(idFornecedor, tipoPessoaFornecedor, cnpjFornecedor,
-						razaoSocialFornecedor, fantasiaFornecedor);
+				fornecedores.setId(Integer.parseInt(vetorFornecedor[0]));
+				fornecedores.setTipoPessoa(Integer.parseInt(vetorFornecedor[1]));
+				fornecedores.setCnpj(vetorFornecedor[2]);
+				fornecedores.setRazaoSocial(vetorFornecedor[3]);
+				fornecedores.setFantasia(vetorFornecedor[4]);
 				listaFornecedor.add(fornecedores);
-				linha = br.readLine();
+				linha = memoriaLeitura.readLine();
 			}
 		} catch (IOException e) {
 			System.out.println("Erro: " + e.getMessage());
 		}
-
 		return (ArrayList<Fornecedor>) listaFornecedor;
-
 	}
 
 	public Boolean deletar(Fornecedor fornecedor) {
-		try {
-			if(ler(fornecedor)) {
-				FileReader lerNoARquivo = new FileReader(DIR_FORNECEDOR_DB);
-				BufferedReader br = new BufferedReader(lerNoARquivo);
-				String linha = br.readLine();
+		try (BufferedReader memoriaLeitura = new BufferedReader(new FileReader(DIR_FORNECEDOR_DB))) {
+			if (ler(fornecedor)) {
+				String linha = memoriaLeitura.readLine();
 				ArrayList<String> lista = new ArrayList<>();
 				while (linha != null) {
 					if (linha.contains(fornecedor.getCnpj() + ";" + fornecedor.getRazaoSocial()) == false) {
 						lista.add(linha);
+					}
+					linha = memoriaLeitura.readLine();
 				}
-				linha = br.readLine();			}
-				FileWriter apagar = new FileWriter(DIR_FORNECEDOR_DB, true);
-				apagar.close();
-				br.close();
-				lerNoARquivo.close();
-				FileWriter escrever = new FileWriter(DIR_FORNECEDOR_DB);
-				BufferedWriter bw = new BufferedWriter(escrever);
+				BufferedWriter bw = new BufferedWriter(new FileWriter(DIR_FORNECEDOR_DB));
 				for (int i = 0; i < lista.size(); i++) {
 					bw.write(lista.get(i));
 					bw.newLine();
 				}
 				bw.close();
-				escrever.close();
 				return true;
 			}
-		} 
-		catch (FileNotFoundException e) {
+		} catch (FileNotFoundException e) {
 			System.out.println("Não foi possível abrir o arquivo.");
 			System.out.println("O erro gerado é: " + e.getMessage());
-		}	
-		catch (IOException e) {
+		} catch (IOException e) {
 			System.out.println("Não foi possível ler o arquivo.");
 			System.out.println("O erro gerado é: " + e.getMessage());
 		}
@@ -141,11 +118,43 @@ public class FornecedorService {
 	}
 
 	public Boolean atualizar(Fornecedor fornecedor) {
-		if (existeArquivo()) {
-			return true;
-		} else {
-			return false;
+		Boolean retorno = false;
+		Scanner leia = new Scanner(System.in);
+		try (BufferedReader memoriaLeitura = new BufferedReader(new FileReader(DIR_FORNECEDOR_DB))) {
+			if (ler(fornecedor)) {
+				String linha = memoriaLeitura.readLine();
+				ArrayList<String> lista = new ArrayList<>();
+				while (linha != null) {
+					if (linha.contains(fornecedor.getCnpj() + ";" + fornecedor.getRazaoSocial()) == false) {
+						lista.add(linha);
+					} else {
+						String[] vetorFornecedor = linha.split(";");
+						System.out.print("Informe a nova razão social: ");
+						String novaRazaoSocial = leia.nextLine().toUpperCase(); // alterar razão social
+						System.out.print("Informe novo nome fantasia: ");
+						String novaFantasia = leia.nextLine().toUpperCase(); // alterar nome fantasia do fornecedor
+						linha = vetorFornecedor[0] + ";" + vetorFornecedor[1] + ";" + vetorFornecedor[2] + ";" + novaRazaoSocial + ";"
+								+ novaFantasia;
+						lista.add(linha);
+						retorno = true;
+					}
+					linha = memoriaLeitura.readLine();
+				}
+				BufferedWriter bw = new BufferedWriter(new FileWriter(DIR_FORNECEDOR_DB));
+				for (int i = 0; i < lista.size(); i++) {
+					bw.write(lista.get(i));
+					bw.newLine();
+				}
+				bw.close();
+			}
+		} catch (FileNotFoundException e) {
+			System.out.println("Não foi possível abrir o arquivo.");
+			System.out.println("O erro gerado é: " + e.getMessage());
+		} catch (IOException e) {
+			System.out.println("Não foi possível ler o arquivo.");
+			System.out.println("O erro gerado é: " + e.getMessage());
 		}
+		return retorno;
 	}
 
 	private Boolean existeArquivo() {
@@ -165,28 +174,25 @@ public class FornecedorService {
 			return false;
 		}
 	}
-	
-	public Integer codigoFornecedor() {
-		
-		criaArquivo();
-		Integer qtd=0;
-		try {						
-			FileReader lerNoARquivo = new FileReader(DIR_FORNECEDOR_DB);
-			BufferedReader br = new BufferedReader(lerNoARquivo);		
-			String linha = br.readLine();
-			ArrayList <String>lista = new ArrayList<>();			
-			while(linha!=null) {
-				String[] vetorCliente = linha.split(";");				
+
+	private Integer codigoFornecedor() {
+		Integer qtd = 0;
+		if (!existeArquivo()) {
+			return qtd;
+		}
+		try (BufferedReader memoriaLeitura = new BufferedReader(new FileReader(DIR_FORNECEDOR_DB))) {
+			String linha = memoriaLeitura.readLine();
+			ArrayList<String> lista = new ArrayList<>();
+			while (linha != null) {
+				String[] vetorCliente = linha.split(";");
 				Integer idCliente = Integer.parseInt(vetorCliente[0]);
-				qtd=idCliente;
-				linha = br.readLine();
-			}			
-			br.close();		
-		}	
-		catch (IOException e){
+				qtd = idCliente;
+				linha = memoriaLeitura.readLine();
+			}
+		} catch (IOException e) {
 			System.out.println("Erro: " + e.getMessage());
-		}		
-		return qtd;		
+		}
+		return qtd;
 	}
 
 }

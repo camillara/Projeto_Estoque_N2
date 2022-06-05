@@ -9,6 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import model.Cliente;
 
@@ -20,10 +21,8 @@ public class ClienteService {
 
 	public Boolean escrever(Cliente cliente) {
 
-		try {
+		try (BufferedReader memoriaLeitura = new BufferedReader(new FileReader(DIR_CLIENTE_DB))) {
 			if (existeArquivo()) {
-				FileReader arquivoLeitura = new FileReader(DIR_CLIENTE_DB);
-				BufferedReader memoriaLeitura = new BufferedReader(arquivoLeitura);
 				cliente.setId(codigoCliente() + 1);
 				String dados = cliente.getId() + ";" + cliente.getNome() + ";" + cliente.getCpf() + ";"
 						+ cliente.getGenero() + ";" + cliente.getEndereco() + ";" + cliente.getTelefone() + "\n";
@@ -50,10 +49,8 @@ public class ClienteService {
 	}
 
 	public Boolean ler(Cliente cliente) {
-		try {
+		try (BufferedReader memoriaLeitura = new BufferedReader(new FileReader(DIR_CLIENTE_DB))){
 			if (existeArquivo()) {
-				FileReader arquivoLeitura = new FileReader(DIR_CLIENTE_DB);
-				BufferedReader memoriaLeitura = new BufferedReader(arquivoLeitura);
 				String linha = null;
 				while ((linha = memoriaLeitura.readLine()) != null) {
 					String[] linhaSplit = linha.split(";");
@@ -78,20 +75,19 @@ public class ClienteService {
 
 	public ArrayList<Cliente> ler() {
 		List<Cliente> cliente = new ArrayList<>();
-		try (BufferedReader br = new BufferedReader(new FileReader(DIR_CLIENTE_DB))) {
-			String linha = br.readLine();
+		try (BufferedReader memoriaLeitura = new BufferedReader(new FileReader(DIR_CLIENTE_DB))) {
+			String linha = memoriaLeitura.readLine();
 			while (linha != null) {
+				Cliente listaCliente = new Cliente();
 				String[] vetorClientes = linha.split(";");
-				Integer idCliente = Integer.parseInt(vetorClientes[0]);
-				String nomeCliente = vetorClientes[1];
-				String cpfCliente = vetorClientes[2];
-				String generoCliente = vetorClientes[3];
-				String enderecoCliente = vetorClientes[4];
-				String telefoneCliente = vetorClientes[5];
-				Cliente listaCliente = new Cliente(idCliente, nomeCliente, cpfCliente, generoCliente, enderecoCliente,
-						telefoneCliente);
+				listaCliente.setId(Integer.parseInt(vetorClientes[0]));
+				listaCliente.setNome(vetorClientes[1]);
+				listaCliente.setCpf(vetorClientes[2]);
+				listaCliente.setGenero(vetorClientes[3]);
+				listaCliente.setEndereco(vetorClientes[4]);
+				listaCliente.setTelefone(vetorClientes[5]);
 				cliente.add(listaCliente);
-				linha = br.readLine();
+				linha = memoriaLeitura.readLine();
 			}
 		} catch (IOException e) {
 			System.out.println("Erro: " + e.getMessage());
@@ -101,30 +97,22 @@ public class ClienteService {
 	}
 
 	public Boolean deletar(Cliente cliente) {
-		try {
+		try (BufferedReader memoriaLeitura = new BufferedReader(new FileReader(DIR_CLIENTE_DB))){
 			if (ler(cliente)) {
-				FileReader lerNoARquivo = new FileReader(DIR_CLIENTE_DB);
-				BufferedReader br = new BufferedReader(lerNoARquivo);
-				String linha = br.readLine();
+				String linha = memoriaLeitura.readLine();
 				ArrayList<String> lista = new ArrayList<>();
 				while (linha != null) {
 					if (linha.contains(cliente.getNome() + ";" + cliente.getCpf()) == false) {
 						lista.add(linha);
 					}
-					linha = br.readLine();
+					linha = memoriaLeitura.readLine();
 				}
-				FileWriter apagar = new FileWriter(DIR_CLIENTE_DB, true);
-				apagar.close();
-				br.close();
-				lerNoARquivo.close();
-				FileWriter escrever = new FileWriter(DIR_CLIENTE_DB);
-				BufferedWriter bw = new BufferedWriter(escrever);
+				BufferedWriter bw = new BufferedWriter(new FileWriter(DIR_CLIENTE_DB));
 				for (int i = 0; i < lista.size(); i++) {
 					bw.write(lista.get(i));
 					bw.newLine();
 				}
 				bw.close();
-				escrever.close();
 				return true;
 			}
 		} catch (FileNotFoundException e) {
@@ -141,11 +129,46 @@ public class ClienteService {
 	}
 
 	public Boolean atualizar(Cliente cliente) {
-		if (existeArquivo()) {
-			return true;
-		} else {
-			return false;
+		Boolean retorno = false;
+		Scanner leia = new Scanner (System.in);
+		try (BufferedReader memoriaLeitura = new BufferedReader(new FileReader(DIR_CLIENTE_DB))){
+			if(ler(cliente)) {
+				String linha = memoriaLeitura.readLine();
+				ArrayList<String> lista = new ArrayList<>();
+				while (linha != null) {
+					if (linha.contains(cliente.getNome() + ";" + cliente.getCpf())== false) {
+						lista.add(linha);
+					} else {
+						String[] vetorCliente = linha.split(";");									
+						System.out.print("Informe o nome correto: ");
+						String novoNomeCliente = leia.nextLine().toUpperCase(); // alterar o nome do cliente
+						System.out.print("Informe o novo endereço: ");
+						String novoEnderecoCliente = leia.nextLine().toUpperCase(); // alterar o endereço do cliente
+						System.out.print("Informe o novo telefone: ");
+						String novoTelefoneCliente = leia.nextLine(); // alterar o telefone do cliente
+						linha = vetorCliente[0]+";"+novoNomeCliente+";"+vetorCliente[2]+";"+vetorCliente[3]+";"+novoEnderecoCliente+";"+novoTelefoneCliente;
+						lista.add(linha);
+						retorno = true;						
+					}
+					linha = memoriaLeitura.readLine();
+				}
+				BufferedWriter bw = new BufferedWriter(new FileWriter(DIR_CLIENTE_DB));
+				for (int i = 0; i < lista.size(); i++) {
+					bw.write(lista.get(i));
+					bw.newLine();
+				}
+				bw.close();
+			}
+		} 
+		catch (FileNotFoundException e) {
+			System.out.println("Não foi possível abrir o arquivo.");
+			System.out.println("O erro gerado é: " + e.getMessage());
+		}	
+		catch (IOException e) {
+			System.out.println("Não foi possível ler o arquivo.");
+			System.out.println("O erro gerado é: " + e.getMessage());
 		}
+		return retorno;
 	}
 
 	private Boolean existeArquivo() {
@@ -168,22 +191,20 @@ public class ClienteService {
 
 	}
 
-	public Integer codigoCliente() {
-
-		criaArquivo();
+	private Integer codigoCliente() {
 		Integer qtd = 0;
-		try {
-			FileReader lerNoARquivo = new FileReader(DIR_CLIENTE_DB);
-			BufferedReader br = new BufferedReader(lerNoARquivo);
-			String linha = br.readLine();
+		if(!existeArquivo()){
+			return qtd;
+		}		
+		try (BufferedReader memoriaLeitura = new BufferedReader(new FileReader(DIR_CLIENTE_DB))){
+			String linha = memoriaLeitura.readLine();
 			ArrayList<String> lista = new ArrayList<>();
 			while (linha != null) {
 				String[] vetorCliente = linha.split(";");
 				Integer idCliente = Integer.parseInt(vetorCliente[0]);
 				qtd = idCliente;
-				linha = br.readLine();
+				linha = memoriaLeitura.readLine();
 			}
-			br.close();
 		} catch (IOException e) {
 			System.out.println("Erro: " + e.getMessage());
 		}

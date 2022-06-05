@@ -21,11 +21,8 @@ public class UsuarioService {
 
 	public Boolean escrever(Usuario user) {
 
-		try {
+		try (BufferedReader memoriaLeitura = new BufferedReader(new FileReader(DIR_USER_DB))){
 			if (existeArquivo()) {
-
-				FileReader arquivoLeitura = new FileReader(DIR_USER_DB);
-				BufferedReader memoriaLeitura = new BufferedReader(arquivoLeitura);
 				user.setIdUsuario(idUsuario()+1);
 				String dados = user.getIdUsuario() + ";" + user.getUsername() + ";" + user.getPassword() + "\n";
 				FileWriter escreverArquivo = new FileWriter(arquivo, true);
@@ -36,12 +33,10 @@ public class UsuarioService {
 				criaArquivo();
 				escrever(user); // recursão
 			}
-
 		} catch (FileNotFoundException e) {
 			System.out.println("Não foi possível abrir o arquivo.");
 			System.out.println("O erro gerado é: " + e.getMessage());
 		}
-
 		catch (IOException e) {
 			System.out.println("Não foi possível ler o arquivo.");
 			System.out.println("O erro gerado é: " + e.getMessage());
@@ -50,10 +45,8 @@ public class UsuarioService {
 	}
 
 	public Boolean ler(Usuario user) {
-		try {
+		try (BufferedReader memoriaLeitura = new BufferedReader(new FileReader(DIR_USER_DB))) {
 			if (existeArquivo()) {
-				FileReader arquivoLeitura = new FileReader(DIR_USER_DB);
-				BufferedReader memoriaLeitura = new BufferedReader(arquivoLeitura);
 				String linha = null;
 				while ((linha = memoriaLeitura.readLine()) != null) {
 					String[] linhaSplit = linha.split(";");
@@ -61,14 +54,11 @@ public class UsuarioService {
 						return true;
 					}
 				}
-
 			}
-
 		} catch (FileNotFoundException e) {
 			System.out.println("Não foi possível abrir o arquivo.");
 			System.out.println("O erro gerado é: " + e.getMessage());
 		}
-
 		catch (IOException e) {
 			System.out.println("Não foi possível ler o arquivo.");
 			System.out.println("O erro gerado é: " + e.getMessage());
@@ -78,16 +68,16 @@ public class UsuarioService {
 
 	public ArrayList<Usuario> ler() {
 		List<Usuario> users = new ArrayList<>();
-		try (BufferedReader br = new BufferedReader(new FileReader(DIR_USER_DB))) {
-			String linha = br.readLine();
+		try (BufferedReader memoriaLeitura = new BufferedReader(new FileReader(DIR_USER_DB))) {
+			String linha = memoriaLeitura.readLine();
 			while (linha != null) {
+				Usuario listaUsuario = new Usuario();
 				String[] vetorUsuarios = linha.split(";");
-				Integer idUsuario = Integer.parseInt(vetorUsuarios[0]);
-				String nomeUsuario = vetorUsuarios[1];
-				String senhaUsuario = vetorUsuarios[2];
-				Usuario listaUsuario = new Usuario(idUsuario, nomeUsuario, senhaUsuario);
+				listaUsuario.setIdUsuario(Integer.parseInt(vetorUsuarios[0]));
+				listaUsuario.setUsername(vetorUsuarios[1]);
+				listaUsuario.setPassword(vetorUsuarios[2]);
 				users.add(listaUsuario);
-				linha = br.readLine();
+				linha = memoriaLeitura.readLine();
 			}
 		} catch (IOException e) {
 			System.out.println("Erro: " + e.getMessage());
@@ -96,37 +86,28 @@ public class UsuarioService {
 	}
 
 	public Boolean deletar(Usuario user) {
-		try {
+		try (BufferedReader memoriaLeitura = new BufferedReader(new FileReader(DIR_USER_DB))){
 			if(ler(user)) {
-				FileReader lerNoARquivo = new FileReader(DIR_USER_DB);
-				BufferedReader br = new BufferedReader(lerNoARquivo);
-				String linha = br.readLine();
+				String linha = memoriaLeitura.readLine();
 				ArrayList<String> lista = new ArrayList<>();
 				while (linha != null) {
 					if (linha.contains(user.getUsername() + ";" + user.getPassword()) == false) {
 						lista.add(linha);
 				}
-				linha = br.readLine();			}
-				FileWriter apagar = new FileWriter(DIR_USER_DB, true);
-				apagar.close();
-				br.close();
-				lerNoARquivo.close();
-				FileWriter escrever = new FileWriter(DIR_USER_DB);
-				BufferedWriter bw = new BufferedWriter(escrever);
+				linha = memoriaLeitura.readLine();			}
+				BufferedWriter bw = new BufferedWriter(new FileWriter(DIR_USER_DB));
 				for (int i = 0; i < lista.size(); i++) {
 					bw.write(lista.get(i));
 					bw.newLine();
 				}
 				bw.close();
-				escrever.close();
 				return true;
 			}
 		} 
 		catch (FileNotFoundException e) {
 			System.out.println("Não foi possível abrir o arquivo.");
 			System.out.println("O erro gerado é: " + e.getMessage());
-		}
-	
+		}	
 		catch (IOException e) {
 			System.out.println("Não foi possível ler o arquivo.");
 			System.out.println("O erro gerado é: " + e.getMessage());
@@ -137,54 +118,40 @@ public class UsuarioService {
 	public Boolean atualizar(Usuario user) {
 		Boolean retorno = false;
 		Scanner leia = new Scanner (System.in);
-		try{
+		try (BufferedReader memoriaLeitura = new BufferedReader(new FileReader(DIR_USER_DB))){
 			if(ler(user)) {
-				FileReader lerNoARquivo = new FileReader(DIR_USER_DB);
-				BufferedReader br = new BufferedReader(lerNoARquivo);			
-				String linha = br.readLine();
+				String linha = memoriaLeitura.readLine();
 				ArrayList<String> lista = new ArrayList<>();
 				while (linha != null) {
 					if (linha.contains(user.getUsername() + ";" + user.getPassword())== false) {
 						lista.add(linha);
 					} else {
 						String[] vetorUsuario = linha.split(";");				
-						Integer idUsuarioAlterar = Integer.parseInt(vetorUsuario[0]); // manter o código de usuário						
-						String username = vetorUsuario[1]; // manter o username de usuário
 						System.out.print("Informe a nova senha: ");
-						String password = leia.nextLine();
-						linha = idUsuarioAlterar + ";" + username + ";" + password;
+						String password = leia.nextLine(); // alterar somente a senha do usuário
+						linha = vetorUsuario[0] + ";" +vetorUsuario[1] + ";" + password;
 						lista.add(linha);
-						retorno = true;
-						
+						retorno = true;						
 					}
-					linha = br.readLine();
+					linha = memoriaLeitura.readLine();
 				}
-				FileWriter apagar = new FileWriter(DIR_USER_DB, true);
-				apagar.close();
-				br.close();
-				lerNoARquivo.close();
-				FileWriter escrever = new FileWriter(DIR_USER_DB);
-				BufferedWriter bw = new BufferedWriter(escrever);
+				BufferedWriter bw = new BufferedWriter(new FileWriter(DIR_USER_DB));
 				for (int i = 0; i < lista.size(); i++) {
 					bw.write(lista.get(i));
 					bw.newLine();
 				}
 				bw.close();
-				escrever.close();
-				return retorno;
 			}
 		} 
 		catch (FileNotFoundException e) {
 			System.out.println("Não foi possível abrir o arquivo.");
 			System.out.println("O erro gerado é: " + e.getMessage());
-		}
-	
+		}	
 		catch (IOException e) {
 			System.out.println("Não foi possível ler o arquivo.");
 			System.out.println("O erro gerado é: " + e.getMessage());
 		}
 		return retorno;
-
 	}
 
 	private Boolean existeArquivo() {
@@ -192,7 +159,6 @@ public class UsuarioService {
 	}
 
 	private Boolean criaArquivo() {
-
 		try {
 			if (arquivo.exists()) {
 				return false;
@@ -204,24 +170,22 @@ public class UsuarioService {
 			System.out.println("O erro gerado é: " + e.getMessage());
 			return false;
 		}
-
 	}
 	
-	public Integer idUsuario() {
-		criaArquivo();
-		Integer qtd=0;
-		try {						
-			FileReader lerNoARquivo = new FileReader(DIR_USER_DB);
-			BufferedReader br = new BufferedReader(lerNoARquivo);		
-			String linha = br.readLine();
+	private Integer idUsuario() { // garantir que o ID do usuário seja sequencial. Mesmo se algum usuário for deletado, continuará a sequência.
+		Integer qtd = 0;
+		if(!existeArquivo()){
+			return qtd;
+		}
+		try (BufferedReader memoriaLeitura = new BufferedReader(new FileReader(DIR_USER_DB))){						
+			String linha = memoriaLeitura.readLine();
 			ArrayList <String>lista = new ArrayList<>();			
 			while(linha!=null) {
 				String[] vetorCliente = linha.split(";");				
 				Integer idCliente = Integer.parseInt(vetorCliente[0]);
 				qtd=idCliente;
-				linha = br.readLine();
+				linha = memoriaLeitura.readLine();
 			}			
-			br.close();		
 		}	
 		catch (IOException e){
 			System.out.println("Erro: " + e.getMessage());

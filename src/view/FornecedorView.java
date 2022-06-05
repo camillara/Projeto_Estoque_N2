@@ -52,7 +52,6 @@ public class FornecedorView {
 			System.out.println("Opção inválida. Escolha novamente.");
 			menuFornecedor();
 			break;
-
 		}
 	}
 
@@ -94,30 +93,17 @@ public class FornecedorView {
 	
 	public void menuAtualizar() {
 		System.out.println("* * * ATUALIZAR FORNECEDOR * * *\n");
-		System.out.print("Informe o código do fornecedor: ");
-		fornecedor.setId(leia.nextInt());
-		leia.nextLine();
 		System.out.print("Informe o CPF / CNPJ: ");
 		fornecedor.setCnpj(leia.nextLine());
 		System.out.print("Informe a Razão Social: ");
 		fornecedor.setRazaoSocial(leia.nextLine().toUpperCase());
-		System.out.print("Informe o nome fantasia: ");
-		fornecedor.setFantasia(leia.nextLine().toUpperCase());
-		Integer tipoPessoa = 0;
-		while (tipoPessoa != 1 && tipoPessoa != 2) {
-			System.out.print("Informe o tipo: [ 1 - Pessoa Física ] [ 2 - Pessoa Jurídica ]: ");
-			tipoPessoa = leia.nextInt();
-		}
-		fornecedor.setTipoPessoa(tipoPessoa);
-		leia.nextLine();
-
 		if (!fornecedorController.atualizar(fornecedor)) {
 			System.out.print("Fornecedor não encontrado! ");
 		} else {
 			System.out.print("Cadastro de fornecedor atualizado com sucesso!");
 		}
 
-		System.out.println("\n* * * * * * *");
+		System.out.println("\n* * * * * * *\n");
 		menuFornecedor();
 	}
 	

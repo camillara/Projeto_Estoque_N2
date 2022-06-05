@@ -88,7 +88,7 @@ public class UsuarioView {
 
 		if (!userController.atualizar(user)) {
 			System.out.println("Usuário e senha informados não encontrado! ");
-			System.out.println("Por segurança, para alterar o cadastro de usuário é necessário informar a o Uername e Password corretos.");
+			System.out.println("Por segurança, para alterar o cadastro de usuário é necessário informar a o Username e Password corretos.");
 		} else {
 			System.out.println("Cadastro de usuário atualizado com sucesso!");
 		}

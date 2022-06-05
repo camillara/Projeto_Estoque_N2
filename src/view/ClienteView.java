@@ -52,7 +52,6 @@ public class ClienteView {
 			System.out.println("Opção inválida. Escolha novamente.");
 			menuCliente();
 			break;
-
 		}
 	}
 
@@ -98,36 +97,16 @@ public class ClienteView {
 
 	public void menuAtualizar() {
 		System.out.println("* * * ATUALIZAR CLIENTE * * *\n");
-		System.out.print("Informe o código do cliente: ");
-		cliente.setId(leia.nextInt());
-		leia.nextLine();
 		System.out.print("Informe o nome: ");
 		cliente.setNome(leia.nextLine().toUpperCase());
-		char genero = 'a';
-		while (genero != 'M' && genero != 'F') {
-			System.out.print("Informe o Genero: [ M - Masculino ] [ F - Feminino ]: ");
-			genero = leia.next().toUpperCase().charAt(0);
-		}
-		if (genero == 'M') {
-			cliente.setGenero("Masculino");
-		} else {
-			cliente.setGenero("Feminino");
-		}
-		leia.nextLine();
 		System.out.print("Informe o CPF: ");
 		cliente.setCpf(leia.nextLine());
-		System.out.print("Informe o endereço: ");
-		cliente.setEndereco(leia.nextLine().toUpperCase());
-		System.out.print("Informe o telefone: ");
-		cliente.setTelefone(leia.nextLine());
-
 		if (!clienteController.atualizar(cliente)) {
-			System.out.print("Cliente não encontrado! ");
+			System.out.println("Cliente não encontrado! ");
 		} else {
-			System.out.print("Cadastro de cliente atualizado com sucesso!");
+			System.out.println("Cadastro de cliente atualizado com sucesso!");
 		}
-
-		System.out.println("\n* * * * * * *");
+		System.out.println("\n* * * * * * *\n");
 		menuCliente();
 	}
 
@@ -138,9 +117,9 @@ public class ClienteView {
 		System.out.print("Informe o CPF: ");
 		cliente.setCpf(leia.nextLine());
 		if (clienteController.deletar(cliente)) {
-			System.out.println("Cadastro do usuário " + cliente.getNome() + " excluído com sucesso!");
+			System.out.println("Cadastro do cliente " + cliente.getNome() + " excluído com sucesso!");
 		} else {
-			System.out.println("Usuário " + cliente.getNome() + " não foi localizado!");
+			System.out.println("Cliente " + cliente.getNome() + " não foi localizado!");
 		}
 		System.out.println("\n* * * * * * *\n");
 		menuCliente();
