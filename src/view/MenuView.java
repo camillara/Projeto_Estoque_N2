@@ -6,12 +6,12 @@ public class MenuView {
 	public void menu() {
 		Scanner leia = new Scanner(System.in);
 		System.out.println("* * * MENU * * *\n");
-		System.out.println("1 - Cadastrar Usuário");
-		System.out.println("2 - Cadastrar Fornecedor");
-		System.out.println("3 - Cadastrar Tipo Pessoa");
-		System.out.println("4 - Cadastrar Tipo Produto");
-		System.out.println("5 - Cadastrar Cliente");
-		System.out.println("6 - Cadastrar Produto");
+		System.out.println("1 - Usuário");
+		System.out.println("2 - Fornecedor");
+		System.out.println("3 - Tipo Pessoa");
+		System.out.println("4 - Tipo Produto");
+		System.out.println("5 - Cliente");
+		System.out.println("6 - Produto");
 		System.out.println("0 - Sair");
 		System.out.println("\n* * * * * * *");
 		System.out.print("==>");

@@ -1,9 +1,11 @@
 package view;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import controller.FornecedorController;
 import model.Fornecedor;
+import model.Usuario;
 
 public class FornecedorView {
 	Scanner leia = new Scanner(System.in);
@@ -34,9 +36,11 @@ public class FornecedorView {
 			break;
 
 		case 3:
+			menuAtualizar();
 			break;
 
 		case 4:
+			menuDeletar();
 			break;
 
 		case 5:
@@ -74,12 +78,16 @@ public class FornecedorView {
 
 	public void menuListar() {
 		
-		fornecedorController.listar();
-		
-		System.out.println("Não possui usuário cadastrado!\n");
-		System.out.println("* * * LISTA DE FORNECEDORES * * *\n");
-		fornecedor.toString();
-		System.out.println("\n* * * * * * *");
+		ArrayList<Fornecedor> fornecedorList = fornecedorController.listar();
+		if (fornecedorController.listar().isEmpty()) {
+			System.out.println("Não possui usuários cadastrados!\n");
+		} else {
+			System.out.println("* * * LISTA DE FORNECEDORES * * *\n");
+			for (Fornecedor f : fornecedorList) {
+				System.out.println(f);
+			}
+		}
+		System.out.println("\n* * * * * * *\n");
 
 		menuFornecedor();
 	}
@@ -110,33 +118,23 @@ public class FornecedorView {
 		}
 
 		System.out.println("\n* * * * * * *");
+		menuFornecedor();
 	}
 	
 	public void menuDeletar() {
 		System.out.println("* * * DELETAR FORNECEDOR * * *\n");
-		System.out.print("Informe o código do fornecedor: ");
-		fornecedor.setId(leia.nextInt());
-		leia.nextLine();
 		System.out.print("Informe o CPF / CNPJ: ");
 		fornecedor.setCnpj(leia.nextLine());
 		System.out.print("Informe a Razão Social: ");
 		fornecedor.setRazaoSocial(leia.nextLine().toUpperCase());
-		System.out.print("Informe o nome fantasia: ");
-		fornecedor.setFantasia(leia.nextLine().toUpperCase());
-		Integer tipoPessoa = 0;
-		while (tipoPessoa != 1 && tipoPessoa != 2) {
-			System.out.print("Informe o tipo: [ 1 - Pessoa Física ] [ 2 - Pessoa Jurídica ]: ");
-			tipoPessoa = leia.nextInt();
-		}
-		fornecedor.setTipoPessoa(tipoPessoa);
-		leia.nextLine();
-		
 		if(!fornecedorController.deletar(fornecedor)) {
-			System.out.print("Fornecedor não encontrado!");
+			System.out.println("Fornecedor " +fornecedor.getRazaoSocial() +" não encontrado!");
 		}
 		else {
-			System.out.print("Cadastro do fornecedor excluído com sucesso!");
+			System.out.println("Cadastro do fornecedor " + fornecedor.getRazaoSocial()+" excluído com sucesso!");
 		}
+		System.out.println("\n* * * * * * *\n");
+		menuFornecedor();
 	}
 
 }

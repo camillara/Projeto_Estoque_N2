@@ -12,11 +12,11 @@ public class Fornecedor {
 
 	}
 
-	public Fornecedor(Integer id, String razaoSocial, String cnpj, Integer tipoPessoa, String fantasia) {
+	public Fornecedor(Integer id, Integer tipoPessoa,  String cnpj, String razaoSocial, String fantasia) {
 		this.id = id;
+		this.tipoPessoa = tipoPessoa;
 		this.razaoSocial = razaoSocial;
 		this.cnpj = cnpj;
-		this.tipoPessoa = tipoPessoa;
 		this.fantasia = fantasia;
 	}
 

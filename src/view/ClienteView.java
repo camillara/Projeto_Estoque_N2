@@ -1,16 +1,18 @@
 package view;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import controller.ClienteController;
 import model.Cliente;
+import model.Usuario;
 
 public class ClienteView {
-	
+
 	Scanner leia = new Scanner(System.in);
 	Cliente cliente = new Cliente();
 	ClienteController clienteController = new ClienteController();
-	
+
 	public void menuCliente() {
 		System.out.println("* * * MENU CLIENTE * * *\n");
 		System.out.println("1 - Cadastrar");
@@ -34,9 +36,11 @@ public class ClienteView {
 			break;
 
 		case 3:
+			menuAtualizar();
 			break;
 
 		case 4:
+			menuDeletar();
 			break;
 
 		case 5:
@@ -75,22 +79,23 @@ public class ClienteView {
 		cliente.setTelefone(leia.nextLine());
 		System.out.println(clienteController.cadastrar(cliente));
 		System.out.println("\n* * * * * * *\n");
-		
 		menuCliente();
 	}
 
 	public void menuListar() {
-		
-		clienteController.listar();
-		System.out.println("Não possui usuário de cliente!\n");
-
-		System.out.println("* * * LISTA DE CLIENTES * * *\n");
-		cliente.toString();
-		System.out.println("\n* * * * * * *");
-		
+		ArrayList<Cliente> clienteList = clienteController.listar();
+		if (clienteController.listar().isEmpty()) {
+			System.out.println("Não possui usuários cadastrados!\n");
+		} else {
+			System.out.println("* * * LISTA DE CLIENTES * * *\n");
+			for (Cliente c : clienteList) {
+				System.out.println(c);
+			}
+		}
+		System.out.println("\n* * * * * * *\n");
 		menuCliente();
 	}
-	
+
 	public void menuAtualizar() {
 		System.out.println("* * * ATUALIZAR CLIENTE * * *\n");
 		System.out.print("Informe o código do cliente: ");
@@ -115,7 +120,7 @@ public class ClienteView {
 		cliente.setEndereco(leia.nextLine().toUpperCase());
 		System.out.print("Informe o telefone: ");
 		cliente.setTelefone(leia.nextLine());
-		
+
 		if (!clienteController.atualizar(cliente)) {
 			System.out.print("Cliente não encontrado! ");
 		} else {
@@ -123,39 +128,22 @@ public class ClienteView {
 		}
 
 		System.out.println("\n* * * * * * *");
+		menuCliente();
 	}
 
 	public void menuDeletar() {
 		System.out.println("* * * DELETAR CLIENTE * * *\n");
-		System.out.print("Informe o código do cliente: ");
-		cliente.setId(leia.nextInt());
-		leia.nextLine();
 		System.out.print("Informe o nome: ");
 		cliente.setNome(leia.nextLine().toUpperCase());
-		char genero = 'a';
-		while (genero != 'M' && genero != 'F') {
-			System.out.print("Informe o Genero: [ M - Masculino ] [ F - Feminino ]: ");
-			genero = leia.next().toUpperCase().charAt(0);
-		}
-		if (genero == 'M') {
-			cliente.setGenero("Masculino");
-		} else {
-			cliente.setGenero("Feminino");
-		}
-		leia.nextLine();
 		System.out.print("Informe o CPF: ");
 		cliente.setCpf(leia.nextLine());
-		System.out.print("Informe o endereço: ");
-		cliente.setEndereco(leia.nextLine().toUpperCase());
-		System.out.print("Informe o telefone: ");
-		cliente.setTelefone(leia.nextLine());
-		
-		if(!clienteController.deletar(cliente)) {
-			System.out.print("Cliente não encontrado!");
+		if (clienteController.deletar(cliente)) {
+			System.out.println("Cadastro do usuário " + cliente.getNome() + " excluído com sucesso!");
+		} else {
+			System.out.println("Usuário " + cliente.getNome() + " não foi localizado!");
 		}
-		else {
-			System.out.print("Cadastro do cliente excluído com sucesso!");
-		}
+		System.out.println("\n* * * * * * *\n");
+		menuCliente();
 	}
-	
+
 }

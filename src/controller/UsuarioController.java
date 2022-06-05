@@ -27,13 +27,11 @@ public class UsuarioController {
 	}
 
 	public Boolean atualizar(Usuario user) {
-
 		return userService.atualizar(user);
 
 	}
 
 	public Boolean deletar(Usuario user) {
-
 		return userService.deletar(user);
 	}
 

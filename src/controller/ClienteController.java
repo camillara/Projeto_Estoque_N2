@@ -34,7 +34,6 @@ public class ClienteController {
 	}
 
 	public Boolean deletar(Cliente cliente) {
-
 		return clienteService.deletar(cliente);
 	}
 
